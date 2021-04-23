@@ -1,0 +1,4 @@
+DESCRIPTION
+A min-heap is a tree-based data structure where each node has a lesser (or equal) value to all its children nodes (root of subtree <= all values in subtree). A vector (or array) can be used to hold the values in the case that the tree is a complete tree where the nodes are added/removed in level order.
+
+Download the starter code and use minHeap.h for the definition of the minHeap class. You will be implementing the insert() and removeMin() functions which should maintain the heap property with the private helper functions siftUp() and siftDown(). Additionally there is a parameterized constructor that takes a vector; this function should be implemented to build the heap from the bottom-up (insert() should not be called). These functions should be implemented in minHeap.cpp. A main function is not needed for submission but can be useful for testing your implemented functions.
