@@ -1,0 +1,44 @@
+DESCRIPTION
+In this lab exercise, you will build a simple spelling checker using a hash table. In the solution code you will find the following files: stringset.h, stringset.cpp, main.cpp, wordlist.txt, and shorter wordlists (wordlist02.txt - wordlist05.txt containing only 2-letter words through 5-letter words respectively). The files stringset.h and stringset.cpp define a C++ class that maintains a set of strings. The class supports the operations insert, remove, and find. The insert() function should insert a string into the Stringset if the string does not yet exist (there should be no duplicates). A bool value-returning function find() returns true if the argument string exists in the Stringset and false if it does not. Finally remove() will remove the string provided in the argument if it exists in the Stringset.
+
+First Goal: Complete the Stringset Class
+Behind the scenes, the Stringset class is to be implemented using a hash table that uses chaining to resolve collisions. A Stringset maintains a vector, table, of pointers to linked lists, so table[h] points to the beginning element of a linked list representing all strings hashing to value h. The STL list class will be used for the linked list (list<string>). You may also use the STL hashing function to generate a hash value for a string.
+
+1.1 Testing
+To test your Stringset class, compile it with main.cpp:
+
+g++ -o main main.cpp stringset.cpp
+
+You can then execute your code by running: ./main
+
+The testStringset() function can be used to test the functionality of the Stringset class.
+
+1.2 Memory Issues
+The Stringset keeps track of the size of its allocated table, as well as the number of elements stored in the table. As the number of elements increases, the performance of the find operation will degrade, since the average length of a linked list will grow large. To maintain good performance, it will therefore be necessary to expand the size of the hash table when it gets too full, defined here as when the number of elements stored in the hash table equals the size of the hash table.
+The initial size of the hash table is currently set to 4 in the constructor. In the insert function, you will use an “if” statement:
+if (num_elems == size)
+{
+        ...
+}
+which is where you need to add the code for expanding the hash table. This code should allocate a new table of twice the size, re-insert all strings currently in the table into the new table, and then de-allocate the old table. To help with debugging, we recommend you leave this “if” statement unimplemented until you have all the other hash table functions working properly; note that the hash table will still work fine without this table expansion code, although the more elements you add, the slower it will get, since the average length of a linked list will grow larger and larger.
+
+Second Goal: A Spelling Checker
+In main.cpp, you will find three functions that main() can call. Currently, the function testStringset() is implemented and called from main(), and the functions loadStringset() and spellcheck() are not yet implemented. The testStringset() function takes a Stringset object (by reference) and provides you with the testing code for using the insert, find, and remove operations as well as printing the current contents of the Stringset. Once you are confident that your hash table is working, comment out the call to testStringset() and implement the loadStringset() and spellcheck() functions, calling these functions from main().
+The loadStringset() function takes two parameters, the first being the Stringset object (by reference) and the second being the string containing the name of the file to open. You will call loadStringset() to read in the words in the file wordlist.txt – approximately 170,000 of them – and loadStringset() will insert them all into your hash table (this will be a good test of how efficiently your insert function runs!). The format of the file loadStringset() expects is exactly one word per line, with each word only containing lower-case alphabetical characters ('a' through 'z') without any whitespace characters (as in wordlist.txt). You may start with the shorter lists of words (wordlist02.txt (only 2-letter words) - wordlist05.txt (only 5-letter words)) to check that loadStringset() is working correctly.
+
+Finally the spellcheck() function takes two parameters, the first being the Stringset object (by constant reference as the object can be quite large) and the second being the word to check for other words that have alternative spellings. Each time spellcheck() is called, it should suggest alternative words in the dictionary that differ by a change of exactly one character by returning a vector of strings containing such words. For example if using alternatives=spellcheck(wordlist, "pointer"); :
+
+
+Possible alternatives for word ’pointer’:
+cointer (alternatives[0])
+jointer (alternatives[1])
+painter (alternatives[2])
+printer (alternatives[3])
+pointed (alternatives[4])
+pointes (alternatives[5])
+
+
+If you type a word of length L, then there are exactly 25L alternative misspellings to check, since there are 25 ways to replace each character with alternatives. For each of these possible alternatives, you should use a call to find to check if it is present as a word in the dictionary.
+If you have never used C++ strings before, they work much like strings in C with which you are probably more familiar: you can refer to the ith character in a string s by writing s[i], and you can find the length of a string s by writing s.length(). Two strings can be compared for equality using the == operator.
+
+Submit stringset.h, stringset.cpp, and main.cpp with the implemented functions.
