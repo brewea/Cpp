@@ -1,0 +1,33 @@
+DESCRIPTION
+The goal of this lab is to gain familiarity with binary search trees. You will code a number of primitive operations on a BST, ultimately building the code base for a randomly-balanced BST – as described in lecture, this form of balancing ensures that the BST stays in a state which is always as if it was just built from scratch by inserting its elements in random order. It’s height is always O(log n) with high probability, so every major BST operation therefore runs in O(log n) time with high probability.
+
+Download the starter code binarySearchTree.cpp where you will find the structure defining a node in a BST, which contains an integer key, pointers to its left and right children, and a size field that should contain a count of the number of nodes in its subtree. For convenience, there is also a constructor that lets you easily allocate a new node given its integer key; for example: Node *n = new Node(7);
+
+There are a number of functions to fill in for this lab. All of them start with a comment describing what the function should do; these functions are described in the lecture slides. The insert(), fix_size(), and inorder_traversal() are already implemented:
+
+insert(): Insert key k into the tree T, returning a pointer to the resulting tree
+
+fix_size(): Updates the size for a node by taking the size of the left subtree + the size of the right subtree + 1; must be used recursively from the deepest point where the subtree size changes back up to the root node
+
+inorder_traversal(): Returns a vector of key values corresponding to the inorder traversal of T (i.e., the contents of T in sorted order); use the function printVector() to print the contents of the vector to standard output.
+
+You will need to implement the following functions:
+
+find(): Return a pointer to the node with key k in tree T, or nullptr if it doesn't exist
+
+select(): Return pointer to node of rank r (with r'th largest key; e.g. r=0 is the minimum)
+
+join(): Join trees L and R (with L containing keys all <= the keys in R); return a pointer to the joined tree.
+
+remove(): Remove key k from T, returning a pointer to the resulting tree; it is required that k be present in T
+
+split(): Split tree T on key k into tree L (containing keys <= k) and a tree R (containing keys > k)
+
+insert_random(): Insert key k into the tree T, returning a pointer to the resulting tree. If k is the Nth node inserted into T, then: with probability 1/N, insert k at the root of T, otherwise, insert_random k recursively left or right of the root of T
+
+A few notes on the more advanced functions:
+
+You should remove a node from a tree by replacing it by the join of its two subtrees. Don’t forget to de-allocate the memory used by the node you remove.
+When you join two subtrees L and R together, you’ll make a random choice between the root of L and the root of R for the root of the merged tree. You want to choose with probabilities proportional to the sizes of L and R, so you will choose the root of L with probability |L|/(|L|+|R|) or the root of R with probability |R|/(|L|+|R|) (here |T| denotes the size of T ). To help with making your random choice: the function rand() (defined in cstdio) returns a random integer, so the expression rand() % N returns a random integer in the range 0 . . . N − 1. For example, “if (rand() % N == 0) A; else B;” would execute statement A with probability 1/N (only if the random number we choose comes out to zero), and otherwise statement B with probability 1−1/N.
+The split function needs to return pointers to two trees, and since functions can generally only return one value, we have therefore achieved this by passing pointers to these pointers – these are the Node **L and Node **R arguments to split. Be careful here in keeping track of what your variables really mean – for example, L is a pointer to a pointer, so *L = ... can be used to change the value of the pointer that L points to.
+For convenience, the main function contains some pre-built testing code, which can help you determine if your implementations are working correctly.
